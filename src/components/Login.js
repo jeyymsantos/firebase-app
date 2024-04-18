@@ -13,30 +13,33 @@ export const Login = () => {
     }
 
     return (
-        <div className='container'>
-            
-            <h1> Login</h1>
-            <hr />
+        <div>
+            <Navbar />
 
-            <form className='form-group' autoComplete='off' onSubmit={handleSignin}>
-                <div class="mb-3">
-                    <label class="form-label">Email address</label>
-                    <input type="email" className="form-control" required 
-                    onChange={(e) => setEmail(e.target.value)} value={email}/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" className="form-control" required 
-                    onChange={(e) => setPassword(e.target.value)} value={password}/>
-                </div>
+            <div className='container col-4 mt-5'>
 
-                <div className='btn-box'>
-                    <span> Doesn't have an account? Register <Link to="/sign-up" className='link'>Here</Link>
-                    </span>
-                </div>
+                <h1>User Login</h1> <br />
 
-                <button type="submit" className="btn btn-success">Login</button>
-            </form>
+                <form className='form-group' autoComplete='off' onSubmit={handleSignin}>
+                    <div class="mb-3">
+                        <label class="form-label">Email address</label>
+                        <input type="email" className="form-control" required
+                            onChange={(e) => setEmail(e.target.value)} value={email} />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" className="form-control" required
+                            onChange={(e) => setPassword(e.target.value)} value={password} />
+                    </div>
+
+                    <div className='btn-box'>
+                        <span> Doesn't have an account? Register <Link to="/sign-up" className='link'>here</Link>
+                        </span>
+                    </div>
+
+                    <button type="submit" className="btn btn-success mt-3">Login</button>
+                </form>
+            </div>
         </div>
     );
 };

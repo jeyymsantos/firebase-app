@@ -5,6 +5,7 @@ import { Signup } from './components/Signup';
 import { Login } from './components/Login';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NotFound from './components/NotFound';
+import Login2 from './components/Login2';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="sign-up" element={<Signup />} />
         <Route path="login" element={<Login />} />
+        <Route path="login_v2" element={<Login2 />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
