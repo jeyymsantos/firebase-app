@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
 import { Link } from "react-router-dom";
+import Footer from './Footer';
 
 export const AddProduct = () => {
 
@@ -24,37 +25,39 @@ export const AddProduct = () => {
                     <div class="mb-3">
                         <label class="form-label">Product Title</label>
                         <input type="text" className="form-control" required
-                            />
+                        />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Product Description</label>
-                        <input type="text" className="form-control" required
-                            />
+                        <textarea type="text" className="form-control" required
+                        />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Product Price</label>
-                        <input type="text" className="form-control" required
-                            />
+                        <input type="number" className="form-control" required
+                        />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Product Quantity</label>
                         <input type="number" className="form-control" required
-                            />
+                        />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Upload Product Image</label>
                         <input type="file" className="form-control" required
-                            />
+                        />
                     </div>
-                   
 
-                    <button type="submit" className="btn btn-success mt-3">Save</button>
+
+                    <button type="submit" className="btn btn-dark mt-3">Save</button>
                 </form>
             </div>
+
+            <Footer />
         </div>
     );
 };
