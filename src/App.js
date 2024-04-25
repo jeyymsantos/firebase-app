@@ -6,6 +6,7 @@ import { Login } from './components/Login';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NotFound from './components/NotFound';
 import Login2 from './components/Login2';
+import AddProduct from './components/AddProduct';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="sign-up" element={<Signup />} />
         <Route path="login" element={<Login />} />
+        <Route path="add_product" element={<AddProduct />} />
         <Route path="login_v2" element={<Login2 />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
