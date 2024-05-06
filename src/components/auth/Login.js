@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { auth, fs } from "../config/Firebase";
+import { auth, fs } from "../../config/Firebase";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import Navbar from "../pages/Navbar";
+import Footer from "../pages/Footer";
 
 export const Login = () => {
 

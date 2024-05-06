@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Navbar from './Navbar';
+import Navbar from '../pages/Navbar';
 import { Link } from "react-router-dom";
-import { auth, fs } from "../config/Firebase";
+import { auth, fs } from "../../config/Firebase";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import Footer from './Footer';
+import Footer from '../pages/Footer';
 
 export const Signup = () => {
 

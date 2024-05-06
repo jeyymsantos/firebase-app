@@ -1,12 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
 import { Home } from './components/Home';
-import { Signup } from './components/Signup';
-import { Login } from './components/Login';
+import { Signup } from './components/auth/Signup';
+import { Login } from './components/auth/Login';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import NotFound from './components/NotFound';
-import Login2 from './components/Login2';
-import AddProduct from './components/AddProduct';
+import NotFound from './components/pages/NotFound';
+import AddProduct from './components/products/AddProduct';
 
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/add_product" element={<AddProduct />} />
-        <Route path="/login_v2" element={<Login2 />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
