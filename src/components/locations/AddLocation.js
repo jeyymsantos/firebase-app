@@ -13,7 +13,6 @@ export const AddLocation = () => {
     const [description, setDescription] = useState('');
     const [custodian, setCustodian] = useState('');
 
-
     const [successMsg, setSuccessMsg] = useState('');
     const [uploadError, setUploadError] = useState('');
 
