@@ -1,37 +1,30 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export const ProductView = ({ product, addToCart }) => {
-
-    const navigate = useNavigate();
-
-    const SaveCart = () => {
-        addToCart(product);
-        navigate('/');
-    }
+export const CartProductView = ({ myCartProduct }) => {
 
     return (
         <div class="col mb-5">
             <div class="card h-100">
                 {/* <!-- Product image--> */}
-                <img class="card-img-top" src={product.prodURL} alt={product.prodTitle} />
+                <img class="card-img-top" src={myCartProduct.prodURL} alt={myCartProduct.prodTitle} />
                 {/* <!-- Product details--> */}
                 <div class="card-body p-4">
                     <div class="text-center">
                         {/* <!-- Product name--> */}
-                        <h5 class="fw-bolder">{product.prodTitle}</h5>
+                        <h5 class="fw-bolder">{myCartProduct.prodTitle}</h5>
 
                         {/* <!-- Product description--> */}
-                        <p>{product.prodDesc}</p>
+                        <p>{myCartProduct.prodDesc}</p>
 
                         {/* <!-- Product price--> */}
-                        ₱{product.prodPrice} | {product.ProdQty} items
+                        ₱{myCartProduct.prodPrice} | {myCartProduct.ProdQty} items
                     </div>
                 </div>
                 {/* <!-- Product actions--> */}
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">
-                        <div class="nav-link" onClick={SaveCart}>Add to cart</div>
+                        <div class="btn btn-danger">Delete</div>
                     </a></div>
                 </div>
             </div>
@@ -40,4 +33,4 @@ export const ProductView = ({ product, addToCart }) => {
     
 };
 
-export default ProductView;
+export default CartProductView;

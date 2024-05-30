@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NotFound from './components/pages/NotFound';
 import AddProduct from './components/products/AddProduct';
 import AddLocation from './components/locations/AddLocation';
+import { CartProducts } from './components/cart/CartProducts';
+import Cart from './components/cart/Cart';
 
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/add_product" element={<AddProduct />} />
         <Route path="/add_location" element={<AddLocation />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

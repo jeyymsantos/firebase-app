@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Products } from './products/Products';
-import { Navbar } from './pages/Navbar';
-import '../assets/css/styles.css';
-import Footer from './pages/Footer';
-import { auth, fs } from '../config/Firebase';
+import { Products } from '../products/Products';
+import { Navbar } from '../pages/Navbar';
+import '../../assets/css/styles.css';
+import Footer from '../pages/Footer';
+import { auth, fs } from '../../config/Firebase';
 import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import { CartProducts } from './CartProducts';
 
-export const Home = () => {
+export const Cart = () => {
 
     const navigate = useNavigate();
 
@@ -90,7 +91,7 @@ export const Home = () => {
                 <section class="py-5">
                     <div class="container px-4 px-lg-5 mt-5">
                         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                            <Products addToCart={AddToCart} />
+                            <CartProducts />
 
 
                         </div>
@@ -109,4 +110,4 @@ export const Home = () => {
     );
 };
 
-export default Home;
+export default Cart;
