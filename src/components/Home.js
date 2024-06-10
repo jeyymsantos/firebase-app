@@ -4,7 +4,7 @@ import { Navbar } from './pages/Navbar';
 import '../assets/css/styles.css';
 import Footer from './pages/Footer';
 import { auth, fs } from '../config/Firebase';
-import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore';
+import { onSnapshot, collection, doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
@@ -53,28 +53,29 @@ export const Home = () => {
             await setDoc(doc(fs, 'tblCart ' + uid, Product.id), Product);
 
             console.log('successfully added to bucket');
+            
         } else {
             navigate('/');
         }
     }
 
-    // let Product;
-    // const AddToCart = async (product) => {
-    //     if (uid != null) {
-
-    //         Product = product;
-    //         const docRef = doc(fs, "")
-
-
-
-    //     } else {
-    //         navigate('/');
-    //     }
-    // }
+    //State of Total Products
+    const [totalProducts, setTotalProducts] = useState(0);
+    useEffect(() => {
+        auth.onAuthStateChanged(user => {
+            if(user){
+                const qtyCollection = collection(fs, 'tblCart ' + user.uid)
+                onSnapshot(qtyCollection, (qtySnapshot) => {
+                    const qty = qtySnapshot.docs.length;
+                    setTotalProducts(qty);
+                })
+            }
+        })
+    }, [])
 
     return (
         <div>
-            <Navbar userName={user} />
+            <Navbar userName={user} totalProducts={totalProducts}/>
 
             <div>
 

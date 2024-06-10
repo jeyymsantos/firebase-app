@@ -3,7 +3,7 @@ import React from 'react';
 import { auth } from '../../config/Firebase';
 import { Link, useNavigate } from 'react-router-dom';
 
-export const Navbar = ({ userName }) => {
+export const Navbar = ({ userName, totalProducts }) => {
 
     const navigate = useNavigate();
 
@@ -30,8 +30,8 @@ export const Navbar = ({ userName }) => {
                         </ul>
 
                         {userName && <>
-                            <Link class="nav-link" to='/cart'>My Cart </Link>
-                            <h6 class="mt-2 me-2"> Hi, {userName}! </h6>
+                            <Link class="nav-link" to='/cart'>My Cart ({totalProducts}) </Link>
+                            <h6 class="ms-5 mt-2 me-2"> Hi, {userName}! </h6>
                             <button class="btn btn-outline-danger" onClick={handleLogout}>
                                 <i class="bi-cart-fill me-1"></i>
                                 Logout

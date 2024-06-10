@@ -4,9 +4,10 @@ import { Navbar } from '../pages/Navbar';
 import '../../assets/css/styles.css';
 import Footer from '../pages/Footer';
 import { auth, fs } from '../../config/Firebase';
-import { addDoc, collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { updateDoc, collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { CartProducts } from './CartProducts';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Cart = () => {
 
@@ -25,7 +26,6 @@ export const Cart = () => {
         return uid;
     }
     const uid = GetUserID();
-    console.log(uid);
 
     // GET CURRENT USER
     function GetCurrentUser() {
@@ -66,40 +66,58 @@ export const Cart = () => {
     })
 
 
+    // CART INCREASE
+    let Product;
+    const myCartProductIncrease = (myCartProduct) => {
+        Product = myCartProduct;
+        Product.qty = Product.qty + 1;
 
-    // const AddToCart = async (product) => {
-    //     if (uid != null) {
-    //         console.log(product);
-    //         Product = product;
-    //         Product['qty'] = 1;
-    //         Product['totalQty'] = Product.qty;
-    //         await setDoc(doc(fs, 'tblBucket' + uid, Product.id), Product);
+        auth.onAuthStateChanged(async (user) => {
+            if(user){
+                const cartProd = doc(fs, 'tblCart ' + user.uid, Product.id);
+                await updateDoc(cartProd, Product);
+            }else {
+                console.log("User is not logged in to perform this transaction");
+            }
+        })
+    }
 
-    //         console.log('successfully added to bucket');
-    //     } else {
-    //         navigate('/');
-    //     }
-    // }
+    // CART DECREASE
 
-    // let Product;
-    // const AddToCart = async (product) => {
-    //     if (uid != null) {
+    const myCartProductDecrease = (myCartProduct) => {
+        Product = myCartProduct;
+        Product.qty = Product.qty - 1 ;
 
-    //         Product = product;
-    //         const docRef = doc(fs, "")
+        auth.onAuthStateChanged(async (user) => {
+            if(user){
+                const cartProd = doc(fs, 'tblCart ' + user.uid, Product.id);
+                await updateDoc(cartProd, Product);
+            }else {
+                console.log("User is not logged in to perform this transaction");
+            }
+        })
+    }
 
-
-
-    //     } else {
-    //         navigate('/');
-    //     }
-    // }
+    //State of Total Products
+    const [totalProducts, setTotalProducts] = useState(0);
+    useEffect(() => {
+        auth.onAuthStateChanged(user => {
+            if(user){
+                const qtyCollection = collection(fs, 'tblCart ' + user.uid)
+                onSnapshot(qtyCollection, (qtySnapshot) => {
+                    const qty = qtySnapshot.docs.length;
+                    setTotalProducts(qty);
+                })
+            }
+        })
+    }, [])
 
     return (
         <div>
-            <Navbar userName={user} />
+            <Navbar userName={user} totalProducts={totalProducts} />
 
-            <div>
+            {/* 
+           <div>
 
                 <header class="bg-dark py-5">
                     <div class="container px-4 px-lg-5 my-5">
@@ -109,7 +127,7 @@ export const Cart = () => {
                         </div>
                     </div>
                 </header>
-                {/* <!-- Section--> */}
+         
                 <section class="py-5">
                     <div class="container px-4 px-lg-5 mt-5">
                         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -125,11 +143,81 @@ export const Cart = () => {
                     </div>
                 </section>
 
-                {/* <!-- Bootstrap core JS--> */}
+              
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-                {/* <!-- Core theme JS--> */}
+          
                 <script src="js/scripts.js"></script>
-            </div>
+            </div> */}
+
+            <section class="h-100 h-custom">
+                <div class="container h-100 py-5">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="col">
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="h5">Cart</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {cartProducts.length > 0 ? (
+                                            <CartProducts myCartProducts={cartProducts} myCartProductIncrease={myCartProductIncrease} myCartProductDecrease={myCartProductDecrease} />
+                                        ) :
+                                            (
+                                                <h1> No Items to Show </h1>
+                                            )}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* <div class="card shadow-2-strong mb-5 mb-lg-0" style={{ borderRadius: '16px' }}>
+                                <div class="card-body p-4">
+
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-4 col-xl-3 mb-4 mb-md-0"></div>
+                                        <div class="col-md-6 col-lg-4 col-xl-6"></div>
+                                        <div class="col-lg-4 col-xl-3">
+                                            <div class="d-flex justify-content-between" style={{ fontWeight: '500' }}>
+                                                <p class="mb-2">Subtotal</p>
+                                                <p class="mb-2">$23.49</p>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between" style={{ fontWeight: '500' }}>
+                                                <p class="mb-0">Shipping</p>
+                                                <p class="mb-0">$2.99</p>
+                                            </div>
+
+                                            <hr class="my-4" />
+
+                                            <div class="d-flex justify-content-between mb-4" style={{ fontWeight: '500' }}>
+                                                <p class="mb-2">Total (tax included)</p>
+                                                <p class="mb-2">$26.48</p>
+                                            </div>
+
+                                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Checkout</span>
+                                                    <span>$26.48</span>
+                                                </div>
+                                            </button>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div> */}
+
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <Footer />
 
