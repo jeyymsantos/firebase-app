@@ -50,7 +50,7 @@ export const Home = () => {
             Product = product;
             Product['qty'] = 1;
             Product['totalQty'] = Product.qty;
-            await setDoc(doc(fs, 'tblBucket' + uid, Product.id), Product);
+            await setDoc(doc(fs, 'tblCart ' + uid, Product.id), Product);
 
             console.log('successfully added to bucket');
         } else {

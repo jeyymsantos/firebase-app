@@ -7,7 +7,7 @@ export const ProductView = ({ product, addToCart }) => {
 
     const SaveCart = () => {
         addToCart(product);
-        navigate('/');
+        navigate('/cart');
     }
 
     return (
