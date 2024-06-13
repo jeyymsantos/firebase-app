@@ -73,36 +73,49 @@ export const Cart = () => {
         Product.qty = Product.qty + 1;
 
         auth.onAuthStateChanged(async (user) => {
-            if(user){
+            if (user) {
                 const cartProd = doc(fs, 'tblCart ' + user.uid, Product.id);
                 await updateDoc(cartProd, Product);
-            }else {
+            } else {
                 console.log("User is not logged in to perform this transaction");
             }
         })
     }
 
     // CART DECREASE
-
     const myCartProductDecrease = (myCartProduct) => {
         Product = myCartProduct;
-        Product.qty = Product.qty - 1 ;
+        Product.qty = Product.qty - 1;
 
         auth.onAuthStateChanged(async (user) => {
-            if(user){
+            if (user) {
                 const cartProd = doc(fs, 'tblCart ' + user.uid, Product.id);
                 await updateDoc(cartProd, Product);
-            }else {
+            } else {
                 console.log("User is not logged in to perform this transaction");
             }
         })
     }
 
+    // Method to calculate total quantity
+    const getTotalQuantity = () => {
+        return cartProducts.reduce((total, product) => total + product.qty, 0);
+    };
+
+    const totalQuantity = getTotalQuantity();
+
+    // Method to calculate total amount
+    const getTotalAmount = () => {
+        return cartProducts.reduce((total, product) => total + (product.qty * product.price), 0);
+    };
+
+    const totalAmount = getTotalAmount();
+
     //State of Total Products
     const [totalProducts, setTotalProducts] = useState(0);
     useEffect(() => {
         auth.onAuthStateChanged(user => {
-            if(user){
+            if (user) {
                 const qtyCollection = collection(fs, 'tblCart ' + user.uid)
                 onSnapshot(qtyCollection, (qtySnapshot) => {
                     const qty = qtySnapshot.docs.length;
@@ -177,34 +190,42 @@ export const Cart = () => {
                                 </table>
                             </div>
 
-                            {/* <div class="card shadow-2-strong mb-5 mb-lg-0" style={{ borderRadius: '16px' }}>
+                            <div class="card shadow-2-strong mb-5 mb-lg-0" style={{ borderRadius: '16px' }}>
                                 <div class="card-body p-4">
 
                                     <div class="row">
-                                        <div class="col-md-6 col-lg-4 col-xl-3 mb-4 mb-md-0"></div>
+                                        <div class="col-md-6 col-lg-4 col-xl-3 mb-4 mb-md-0">
+
+
+                                            <div class="d-flex justify-content-between" style={{ fontWeight: '500' }}>
+                                                <p class="mb-2">Total Quantity:</p>
+                                                <p class="mb-2">{totalQuantity}</p>
+                                            </div>
+
+                                        </div>
                                         <div class="col-md-6 col-lg-4 col-xl-6"></div>
                                         <div class="col-lg-4 col-xl-3">
                                             <div class="d-flex justify-content-between" style={{ fontWeight: '500' }}>
                                                 <p class="mb-2">Subtotal</p>
-                                                <p class="mb-2">$23.49</p>
+                                                <p class="mb-2">-</p>
                                             </div>
 
                                             <div class="d-flex justify-content-between" style={{ fontWeight: '500' }}>
                                                 <p class="mb-0">Shipping</p>
-                                                <p class="mb-0">$2.99</p>
+                                                <p class="mb-0">-</p>
                                             </div>
 
                                             <hr class="my-4" />
 
                                             <div class="d-flex justify-content-between mb-4" style={{ fontWeight: '500' }}>
-                                                <p class="mb-2">Total (tax included)</p>
-                                                <p class="mb-2">$26.48</p>
+                                                <p class="mb-2">Total</p>
+                                                <p class="mb-2">{totalAmount}</p>
                                             </div>
 
                                             <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
                                                 <div class="d-flex justify-content-between">
-                                                    <span>Checkout</span>
-                                                    <span>$26.48</span>
+                                                    <span>Pay</span> 
+                                                    <span>ment</span>
                                                 </div>
                                             </button>
 
@@ -212,7 +233,7 @@ export const Cart = () => {
                                     </div>
 
                                 </div>
-                            </div> */}
+                            </div>
 
                         </div>
                     </div>
