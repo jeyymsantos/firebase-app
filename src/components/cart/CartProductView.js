@@ -11,7 +11,6 @@ export const CartProductView = ({ myCartProduct, myCartProductIncrease, myCartPr
 
     const handleCartIncrease = () => {
         myCartProductIncrease(myCartProduct);
-        // console.log("naclick mo ako");
     }
 
     const handleCartProductRemove = () => {
@@ -23,6 +22,9 @@ export const CartProductView = ({ myCartProduct, myCartProductIncrease, myCartPr
             }
         })
     }
+
+    // Calculate sub-total for the product
+    const subTotal = myCartProduct.qty * myCartProduct.prodPrice;
 
     return (
         <tr>
@@ -52,6 +54,9 @@ export const CartProductView = ({ myCartProduct, myCartProductIncrease, myCartPr
             </td>
             <td class="align-middle">
                 <p class="mb-0" style={{ fontWeight: 500 }}>₱{myCartProduct.prodPrice}</p>
+            </td>
+            <td class="align-middle">
+                <p class="mb-0" style={{ fontWeight: 500 }}>₱{subTotal}</p>
             </td>
             <td class="align-middle">
                 <button class="btn btn-danger" onClick={handleCartProductRemove}> Remove </button>

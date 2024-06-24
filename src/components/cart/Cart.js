@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Products } from '../products/Products';
 import { Navbar } from '../pages/Navbar';
 import '../../assets/css/styles.css';
 import Footer from '../pages/Footer';
@@ -7,7 +6,6 @@ import { auth, fs } from '../../config/Firebase';
 import { updateDoc, collection, doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { CartProducts } from './CartProducts';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Cart = () => {
 
@@ -68,23 +66,39 @@ export const Cart = () => {
 
     // CART INCREASE
     let Product;
-    const myCartProductIncrease = (myCartProduct) => {
+    const myCartProductIncrease = async (myCartProduct) => {
         Product = myCartProduct;
-        Product.qty = Product.qty + 1;
 
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                const cartProd = doc(fs, 'tblCart ' + user.uid, Product.id);
-                await updateDoc(cartProd, Product);
-            } else {
-                console.log("User is not logged in to perform this transaction");
-            }
-        })
+        const productDocRef = doc(fs, 'tblProducts', Product.id);
+        const productDoc = await getDoc(productDocRef);
+        const availableQty = productDoc.data().ProdQty;
+
+        if (Product.qty < availableQty) {
+            Product.qty = Product.qty + 1;
+
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    const cartProd = doc(fs, 'tblCart ' + user.uid, Product.id);
+
+                    await updateDoc(cartProd, Product);
+                } else {
+                    console.log("User is not logged in to perform this transaction");
+                }
+            })
+        } else {
+            alert('Cannot add more than available quantity');
+        }
     }
 
     // CART DECREASE
     const myCartProductDecrease = (myCartProduct) => {
         Product = myCartProduct;
+
+        if (Product.qty == 1) {
+            alert("You have reached the minimum product qty!");
+            return;
+        }
+
         Product.qty = Product.qty - 1;
 
         auth.onAuthStateChanged(async (user) => {
@@ -106,7 +120,7 @@ export const Cart = () => {
 
     // Method to calculate total amount
     const getTotalAmount = () => {
-        return cartProducts.reduce((total, product) => total + (product.qty * product.price), 0);
+        return cartProducts.reduce((total, product) => total + (product.qty * product.prodPrice), 0);
     };
 
     const totalAmount = getTotalAmount();
@@ -123,7 +137,7 @@ export const Cart = () => {
                 })
             }
         })
-    }, [])
+    }, []);
 
     return (
         <div>
@@ -174,6 +188,7 @@ export const Cart = () => {
                                             <th scope="col" class="h5">Cart</th>
                                             <th scope="col">Quantity</th>
                                             <th scope="col">Price</th>
+                                            <th scope="col">Sub-Total</th>
                                             <th scope="col">Remove</th>
                                         </tr>
                                     </thead>
@@ -197,34 +212,33 @@ export const Cart = () => {
                                         <div class="col-md-6 col-lg-4 col-xl-3 mb-4 mb-md-0">
 
 
+
+
+                                        </div>
+                                        <div class="col-md-6 col-lg-4 col-xl-6"></div>
+
+                                        <div class="col-lg-4 col-xl-3">
+
                                             <div class="d-flex justify-content-between" style={{ fontWeight: '500' }}>
                                                 <p class="mb-2">Total Quantity:</p>
                                                 <p class="mb-2">{totalQuantity}</p>
                                             </div>
 
-                                        </div>
-                                        <div class="col-md-6 col-lg-4 col-xl-6"></div>
-                                        <div class="col-lg-4 col-xl-3">
-                                            <div class="d-flex justify-content-between" style={{ fontWeight: '500' }}>
-                                                <p class="mb-2">Subtotal</p>
-                                                <p class="mb-2">-</p>
+                                            <hr />
+
+                                            <div class="d-flex justify-content-between mb-3" style={{ fontWeight: '500' }}>
+                                                <p class="mb-0">Amount</p>
+                                                <p class="mb-0">₱{totalAmount}</p>
                                             </div>
 
-                                            <div class="d-flex justify-content-between" style={{ fontWeight: '500' }}>
-                                                <p class="mb-0">Shipping</p>
-                                                <p class="mb-0">-</p>
-                                            </div>
 
-                                            <hr class="my-4" />
 
-                                            <div class="d-flex justify-content-between mb-4" style={{ fontWeight: '500' }}>
-                                                <p class="mb-2">Total</p>
-                                                <p class="mb-2">{totalAmount}</p>
-                                            </div>
+
+
 
                                             <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
                                                 <div class="d-flex justify-content-between">
-                                                    <span>Pay</span> 
+                                                    <span>Pay</span>
                                                     <span>ment</span>
                                                 </div>
                                             </button>

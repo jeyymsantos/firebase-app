@@ -48,12 +48,18 @@ export const Home = () => {
         if (uid != null) {
             console.log(product);
             Product = product;
-            Product['qty'] = 1;
-            Product['totalQty'] = Product.qty;
-            await setDoc(doc(fs, 'tblCart ' + uid, Product.id), Product);
+            const cartItemRef = doc(fs, 'tblCart ' + uid, Product.id);
+            const cartItemSnapshot = await getDoc(cartItemRef);
 
-            console.log('successfully added to bucket');
-            
+            if (cartItemSnapshot.exists()) {
+                alert('Item is already in the cart');
+            } else {
+                Product['qty'] = 1;
+                Product['totalQty'] = Product.qty;
+                await setDoc(cartItemRef, Product);
+
+                console.log('Successfully added to cart');
+            }
         } else {
             navigate('/');
         }
